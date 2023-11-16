@@ -43,20 +43,18 @@
                 xhr.send("key=" + key);
             });
             function toggleFullScreen() {
-            var doc = window.document;
-            var docEl = doc.documentElement;
+                var doc = window.document;
+                var docEl = doc.documentElement;
 
-            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-            var exitFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+                var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+                var exitFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 
-            if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-                requestFullScreen.call(docEl);
-            } else {
-                exitFullScreen.call(doc);
+                if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                    requestFullScreen.call(docEl);
+                } else {
+                    exitFullScreen.call(doc);
+                }
             }
-        }
-
-            
         </script>
         <style>
             img {
@@ -65,11 +63,9 @@
                 height: auto;
                 cursor: pointer;
             }
-            
             h1 {
                 text-align: center;
             }
-            
             body {
                     background-color: #2d3d2c;
                     margin: 0;
@@ -94,17 +90,14 @@
                 outline: none;
                 transition: background-color 0.3s;
             }
-
             .fullscreenButton:hover {
                 background-color: #e4e4e4;
             }
-
             .fullscreenIcon {
                 transition: transform 0.3s;
                 color: white;
                 
             }
-
             .fullscreenButton.fullscreen .fullscreenIcon.enterFullscreen,
             .fullscreenButton:not(.fullscreen) .fullscreenIcon.exitFullscreen {
                 display: block;
@@ -124,13 +117,10 @@
     <body>
         <img id="video_feed" src="{{ url_for('video_feed') }}" alt="Video Source" onmousedown="MouseClickDownEvent(event)">
         <button class="fullscreenButton" onclick="toggleFullScreen()">
-            <!-- Icon Platzhalter für Vollbildmodus -->
             <svg class="fullscreenIcon enterFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 
                 <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z"/>
             </svg>
-    
-            <!-- Icon Platzhalter für Vollbildmodus beenden -->
             <svg class="fullscreenIcon exitFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 
                 <path d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z"/>
@@ -138,4 +128,4 @@
 
         </button>
     </body>
-    </html>
+</html>

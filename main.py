@@ -15,10 +15,11 @@ import pyotp
 # ------------------------------------------------------------------------------
 
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = 'YKRTE3MO4AIH2QH5YKRTE3MO4AIH2QH5'
 login_manager = LoginManager(app)
 
-# Simulierte Benutzerdaten (ohne echte Registrierung)
+# Simulierte Benutzerdaten
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
@@ -26,7 +27,7 @@ class User(UserMixin):
 # Simulierte Benutzerdatenbank
 users = {1: User(1)}
 
-# Simulierte Geheimschlüssel für TOTP
+# Geheimschlüssel für TOTP
 secret_keys = {1: 'LXN6C66YJHH4BPBEMXOPYUL7RMHXATH7ODC2ZH7UH4R5PFUF6WJ2ZKBBPTZRZGHCMWKONZTY6IC7JPZHLRWN2JQ42C24EAWC5RGSB2I'}
 
 @login_manager.user_loader
@@ -44,49 +45,33 @@ def login():
         user_id = 1
         if user_id in secret_keys.keys():
             totp = pyotp.TOTP(secret_keys[user_id])
-            
-            totp_code = ''.join([request.form[f'code{i+1}'] for i in range(6)])
 
-            print(totp.now())
-            print(totp_code)
-
+            # Lädt alle nummern aus dem Formular und kombiniert sie
+            totp_code = ''.join([request.form[f'code{i+1}'] for i in range(6)]) 
             if totp.verify(totp_code):
                 user = load_user(user_id)
                 login_user(user)
-                return home()
+                return home() # Lädt die home Seite
             else:
                 error_message = 'Falscher TOTP-Code'
         else:
             error_message = 'Ungültige Benutzer-ID'
-
-    return render_template('index.html', error_message=error_message)
+    return error_message
 
 @app.route('/home')
 @login_required
 def home():
     return render_template('home.html')
 
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return 'Du wurdest ausgeloggt'
-
 def generate():
     while True:
-        # Screenshot nehmen
         screenshot = ImageGrab.grab()
-        
-        # Bild in Bytes umwandeln
         img_bytes = BytesIO()
         screenshot.save(img_bytes, format='JPEG')
         
-        # Bytes zurückgeben
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + img_bytes.getvalue() + b'\r\n')
-               
-        # Kurze Pause
+
         time.sleep(0.04347)
 
 @app.route('/video_feed')
@@ -95,12 +80,12 @@ def video_feed():
     return Response(generate(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+# Events
 @app.route('/mouse_event', methods=['POST'])
 def mouse_event():
-    # Hier kannst du deine gewünschte Aktion mit den erhaltenen Koordinaten hinzufügen
     x = int(request.form['x'])
     y = int(request.form['y'])
-    print(f"mouse up at x:{x} y:{y}")
+
     pyautogui.mouseDown(y=y, x=x)
     time.sleep(0.1)
     pyautogui.mouseUp()
@@ -109,16 +94,14 @@ def mouse_event():
 
 @app.route('/keydown_event', methods=['POST'])
 def keyboard_down():
-    # Hier kannst du deine gewählte Aktion mit den erhaltenen Tastenkombinationen hinzufügen
+
     key = request.form['key']
-    print(f"key down: {key}")
     pyautogui.keyDown(key)
 
-    return '', 204  # Leerer Response mit Statuscode 204 (No Content)
+    return '', 204 
 
 @app.route('/keyup_event', methods=['POST'])
 def keyboard_up():
-    # Hier kannst du deine gewählte Aktion mit den erhaltenen Tastenkombinationen hinzufügen
     key = request.form['key']
     print(f"key up: {key}")
     pyautogui.keyUp(key)
