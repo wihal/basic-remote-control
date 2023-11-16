@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        /* Standardregeln */
+        img {
+            width: 100%;
+            height: auto;
+            resize: both;
+            object-fit: cover;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        body {
+            background-color: #2d3d2c;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .center {
+            align-items: center;
+            justify-content: center;
+            height: 50%;
+            width: 50%;
+            overflow: auto;
+            margin: auto;
+            top: 0; left: 0; bottom: 0; right: 0;
+        }
+
+        button {
+            border: 2px solid #5e5e5e;
+            color: #5e5e5e;
+            text-transform: uppercase;
+            padding: 15px 25px;
+            background-color: #26465300;
+            transition: 0.5s;
+            letter-spacing: 15px;
+        }
+
+        button:hover {
+            text-align: center;
+            transform: translateY(-5px) scale(1.02);
+            border: 2px solid #fafafa;
+            color: #fafafa;
+            box-shadow: 0 10px 10px #c512bf00;
+            text-shadow: 0 5px 5px #000000;
+            cursor: pointer;
+        }
+
+        input {
+            margin: 5px;
+            display: flex;
+            width: 5.5%;
+            border: none;
+            border-bottom: 3px solid #fafafa;
+            color: #f1faee;
+            text-transform: uppercase;
+            padding: 15px 25px;
+            background-color: rgba(226, 226, 226, 0.349);
+            transition: 0.5s;
+            letter-spacing: 15px;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        @media only screen and (max-device-width: 1024px) {
+            img {
+                width: 10%;
+                height: auto;
+                object-fit: cover;
+            }
+        }
+    </style>
+
+    <script>
+        function checkInput(input, nextBoxId) {
+            if (input.value.length === parseInt(input.getAttribute('maxlength'))) {
+                document.getElementById(nextBoxId).focus();
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <form method="POST" action="/">
+        <div class="flex">
+            <input type="number" name="code1" maxlength="1" min="0" max="9" id="box1" oninput="checkInput(this, 'box2')" required>
+            <input type="number" name="code2" maxlength="1" min="0" max="9" id="box2" oninput="checkInput(this, 'box3')" required>
+            <input type="number" name="code3" maxlength="1" min="0" max="9" id="box3" oninput="checkInput(this, 'box4')" required>
+            <input type="number" name="code4" maxlength="1" min="0" max="9" id="box4" oninput="checkInput(this, 'box5')" required>
+            <input type="number" name="code5" maxlength="1" min="0" max="9" id="box5" oninput="checkInput(this, 'box6')" required>
+            <input type="number" name="code6" maxlength="1" min="0" max="9" id="box6" required>
+        </div>
+        <br>
+        <br>
+        <button type="submit" class="center">Login</button>
+    </form>
+</body>
+</html>
