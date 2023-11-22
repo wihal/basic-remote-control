@@ -1,18 +1,10 @@
-from flask import Flask, render_template, Response, request, redirect, url_for
+from flask import Flask, render_template, Response, request
 from PIL import ImageGrab
-import time
+from time import sleep
 from io import BytesIO
-import pyautogui
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from pyautogui import mouseDown, mouseUp, keyDown, keyUp
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
 import pyotp
-
-# ------------------------------------------------------------------------------
-#   Tunnel for hosting on localhost 
-#
-#   docs: https://localhost.run/docs/
-#
-#   ssh -R 80:127.0.0.1:5000 localhost.run
-# ------------------------------------------------------------------------------
 
 app = Flask(__name__)
 
@@ -72,7 +64,7 @@ def generate():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + img_bytes.getvalue() + b'\r\n')
 
-        time.sleep(0.04347)
+        sleep(0.04347)
 
 @app.route('/video_feed')
 @login_required
@@ -86,25 +78,23 @@ def mouse_event():
     x = int(request.form['x'])
     y = int(request.form['y'])
 
-    pyautogui.mouseDown(y=y, x=x)
-    time.sleep(0.1)
-    pyautogui.mouseUp()
+    mouseDown(y=y, x=x)
+    sleep(0.1)
+    mouseUp()
 
     return '', 204  # Leerer Response mit Statuscode 204 (No Content)
 
 @app.route('/keydown_event', methods=['POST'])
 def keyboard_down():
-
     key = request.form['key']
-    pyautogui.keyDown(key)
+    keyDown(key)
 
     return '', 204 
 
 @app.route('/keyup_event', methods=['POST'])
 def keyboard_up():
     key = request.form['key']
-    print(f"key up: {key}")
-    pyautogui.keyUp(key)
+    keyUp(key)
 
     return '', 204
 
